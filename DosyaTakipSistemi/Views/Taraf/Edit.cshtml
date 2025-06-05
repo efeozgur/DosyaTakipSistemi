@@ -1,0 +1,32 @@
+﻿@model DosyaTakipSistemi.Models.TarafModel
+
+<h3>Taraf Bilgilerini Güncelle</h3>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="DosyaId" />
+
+    <div class="form-group">
+        <label>Ad Soyad</label>
+        <input asp-for="AdSoyad" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Tebliğ Tarihi</label>
+        <input asp-for="TebligTarihi" type="date" class="form-control" />
+    </div>
+
+    <div class="form-check">
+        <input asp-for="IstinafTalebi" class="form-check-input" />
+        <label class="form-check-label">İstinaf Talebi</label>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="TemyizTalebi" class="form-check-input" />
+        <label class="form-check-label">Temyiz Talebi</label>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-controller="Dosya" asp-action="Details" asp-route-id="@Model.DosyaId" class="btn btn-secondary">İptal</a>
+</form>

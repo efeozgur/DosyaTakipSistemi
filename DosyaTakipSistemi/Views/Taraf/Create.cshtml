@@ -1,0 +1,81 @@
+﻿@model DosyaTakipSistemi.Models.TarafModel
+
+@{
+    ViewData["Title"] = "Yeni Taraf";
+}
+
+<h2>Taraf Ekle</h2>
+
+<form asp-action="Create" method="post">
+    <p>DOSYA ID: @ViewBag.DosyaId</p>
+    <input type="hidden" asp-for="DosyaId" />
+
+    <div class="form-group">
+        <label>Ad Soyad</label>
+        <input asp-for="AdSoyad" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Taraf Türü</label>
+        <select asp-for="TarafTur" class="form-control" asp-items="Html.GetEnumSelectList<TarafTuru>()">
+            <option value="">----seçiniz----</option>
+
+        </select>
+    </div>
+
+    <div class="form-check mb-2" id="istinafDiv">
+        <input type="hidden" id="kararTuru" value="@((int)ViewBag.KararTuru)" />
+
+        <input asp-for="IstinafTalebi" class="form-check-input" />
+        <label class="form-check-label">İstinaf Talebi Var mı?</label>
+    </div>
+
+    <div class="form-check mb-2" id="temyizDiv">
+        <input asp-for="TemyizTalebi" class="form-check-input" />
+        <label class="form-check-label">Temyiz Talebi Var mı?</label>
+    </div>
+
+
+
+    <br />
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+    <button type="submit" class="btn btn-success">Ekle</button>
+    <a asp-controller="Dosya" asp-action="Details" asp-route-id="@ViewBag.DosyaId" class="btn btn-secondary">İptal</a>
+</form>
+@if (ViewBag.Hata != null)
+{
+    <div class="alert alert-danger">@ViewBag.Hata</div>
+}
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const kararTuru = parseInt(document.getElementById("kararTuru").value);
+
+            const istinafDiv = document.getElementById("istinafDiv");
+            const temyizDiv = document.getElementById("temyizDiv");
+
+            // Hepsini önce gizle
+            istinafDiv.style.display = "none";
+            temyizDiv.style.display = "none";
+
+            // Karara göre göster
+            if (kararTuru === 1) { // IstinafaTabi
+                istinafDiv.style.display = "block";
+            } else if (kararTuru === 2) { // TemyizeTabi
+                temyizDiv.style.display = "block";
+            }
+        });
+    </script>
+}

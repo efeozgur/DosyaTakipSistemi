@@ -1,0 +1,47 @@
+﻿@model DosyaTakipSistemi.Models.DosyaModel
+
+@{
+    ViewData["Title"] = "Yeni Dosya";
+}
+
+<h2>Yeni Dosya Ekle</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>Esas No</label>
+        <input asp-for="EsasNo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Karar No</label>
+        <input asp-for="KararNo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Mahkeme Adı</label>
+        <input asp-for="Mahkeme" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Karar Türü</label>
+        <select asp-for="kararTur" class="form-control" asp-items="Html.GetEnumSelectList<DosyaTakipSistemi.Models.KararTuru>()">
+            <option value="">-- Seçiniz --</option>
+        </select>
+        <span asp-validation-for="kararTur" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Karar Tarihi</label>
+        <input asp-for="KararTarihi" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Tebliğ Tarihi</label>
+        <input asp-for="KararTebligTarihi" type="date" class="form-control" />
+    </div>
+    <div class="form-check">
+        <input asp-for="HarcDurumu" class="form-check-input" />
+        <label class="form-check-label">Harç Yazıldı mı?</label>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
