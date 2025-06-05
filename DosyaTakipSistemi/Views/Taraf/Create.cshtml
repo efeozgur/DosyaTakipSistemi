@@ -4,76 +4,90 @@
     ViewData["Title"] = "Yeni Taraf";
 }
 
-<h2>Taraf Ekle</h2>
-
-<form asp-action="Create" method="post">
-    <p>DOSYA ID: @ViewBag.DosyaId</p>
-    <input type="hidden" asp-for="DosyaId" />
-
-    <div class="form-group">
-        <label>Ad Soyad</label>
-        <input asp-for="AdSoyad" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label>Taraf Türü</label>
-        <select asp-for="TarafTur" class="form-control" asp-items="Html.GetEnumSelectList<TarafTuru>()">
-            <option value="">----seçiniz----</option>
-
-        </select>
-    </div>
-
-    <div class="form-check mb-2" id="istinafDiv">
-        <input type="hidden" id="kararTuru" value="@((int)ViewBag.KararTuru)" />
-
-        <input asp-for="IstinafTalebi" class="form-check-input" />
-        <label class="form-check-label">İstinaf Talebi Var mı?</label>
-    </div>
-
-    <div class="form-check mb-2" id="temyizDiv">
-        <input asp-for="TemyizTalebi" class="form-check-input" />
-        <label class="form-check-label">Temyiz Talebi Var mı?</label>
-    </div>
-
-
-
-    <br />
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <ul>
-                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    <li>@error.ErrorMessage</li>
-                }
-            </ul>
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white fs-4 fw-bold">
+            ➕ Yeni Taraf Ekle
         </div>
-    }
-    <button type="submit" class="btn btn-success">Ekle</button>
-    <a asp-controller="Dosya" asp-action="Details" asp-route-id="@ViewBag.DosyaId" class="btn btn-secondary">İptal</a>
-</form>
-@if (ViewBag.Hata != null)
-{
-    <div class="alert alert-danger">@ViewBag.Hata</div>
-}
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="DosyaId" />
+                <input type="hidden" id="kararTuru" value="@((int)ViewBag.KararTuru)" />
 
+                <div class="mb-3">
+                    <label asp-for="AdSoyad" class="form-label">Ad Soyad</label>
+                    <input asp-for="AdSoyad" class="form-control" placeholder="Tarafın adını ve soyadını girin" />
+                    <span asp-validation-for="AdSoyad" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TarafTur" class="form-label">Taraf Türü</label>
+                    <select asp-for="TarafTur" class="form-select" asp-items="Html.GetEnumSelectList<TarafTuru>()">
+                        <option value="">-- Seçiniz --</option>
+                    </select>
+                    <span asp-validation-for="TarafTur" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3" id="istinafDiv">
+                    <input asp-for="IstinafTalebi" class="form-check-input" id="istinafCheck" />
+                    <label class="form-check-label fw-semibold" for="istinafCheck">İstinaf Talebi Var mı?</label>
+                </div>
+
+                <div class="form-check mb-3" id="temyizDiv">
+                    <input asp-for="TemyizTalebi" class="form-check-input" id="temyizCheck" />
+                    <label class="form-check-label fw-semibold" for="temyizCheck">Temyiz Talebi Var mı?</label>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TebligTarihi" class="form-label">Tebliğ Tarihi</label>
+                    <input asp-for="TebligTarihi" type="date" class="form-control" />
+                    <span asp-validation-for="TebligTarihi" class="text-danger"></span>
+                </div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (ViewBag.Hata != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Hata</div>
+                }
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success">
+                        💾 Kaydet
+                    </button>
+                    <a asp-controller="Dosya" asp-action="Details" asp-route-id="@ViewBag.DosyaId" class="btn btn-secondary">
+                        İptal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const kararTuru = parseInt(document.getElementById("kararTuru").value);
-
             const istinafDiv = document.getElementById("istinafDiv");
             const temyizDiv = document.getElementById("temyizDiv");
 
-            // Hepsini önce gizle
+            // Önce her şeyi gizle
             istinafDiv.style.display = "none";
             temyizDiv.style.display = "none";
 
-            // Karara göre göster
-            if (kararTuru === 1) { // IstinafaTabi
+            if (kararTuru === 1) {
                 istinafDiv.style.display = "block";
-            } else if (kararTuru === 2) { // TemyizeTabi
+            } else if (kararTuru === 2) {
                 temyizDiv.style.display = "block";
             }
         });

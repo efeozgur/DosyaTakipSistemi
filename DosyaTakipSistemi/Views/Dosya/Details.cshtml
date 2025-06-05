@@ -24,7 +24,7 @@
                     @if (Model.ItirazVar)
                     {
                         <div class="alert alert-warning mt-2 mb-0 p-2">
-                            ⚠️ <strong>İtiraz var:</strong> Taraflardan biri <span class="text-danger">temyiz</span> veya <span class="text-danger">istinaf</span> başvurusunda bulunmuş.
+                            ⚠️ <strong>Temyiz/İstinaf var:</strong> Taraflardan biri <span class="text-danger">temyiz</span> veya <span class="text-danger">istinaf</span> başvurusunda bulunmuş.
                         </div>
                     }
                     else
@@ -33,9 +33,10 @@
                     }
                 </div>
             </div>
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">✏️ Dosya Bilgilerini Düzenle</a>
+
 
             <hr />
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">✏️ Dosya Bilgilerini Düzenle</a>
             <strong>💰 Harç Yazıldı mı?</strong>
             @if (Model.HarcDurumu)
             {
@@ -51,7 +52,7 @@
     <!-- TARAFLARIN İTİRAZ DURUMU -->
     <div class="card shadow-sm mb-4 border-0">
         <div class="card-header bg-warning bg-opacity-75 text-dark fs-5 fw-semibold">
-            🔎 Tarafların İtiraz Durumu
+            🔎 Tarafların Temyiz / İstinaf Durumu
         </div>
         <div class="card-body p-0">
             <table class="table table-bordered mb-0">
