@@ -54,5 +54,40 @@ namespace DosyaTakipSistemi.Controllers
 
             return View(dosya);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var dosya = _context.Dosyalar.FirstOrDefault(d => d.Id == id);
+            if (dosya == null)
+                return NotFound();
+
+            return View(dosya);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(DosyaModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var mevcutDosya = _context.Dosyalar.FirstOrDefault(d => d.Id == model.Id);
+            if (mevcutDosya == null)
+                return NotFound();
+
+            // Bilgileri güncelle
+            mevcutDosya.EsasNo = model.EsasNo;
+            mevcutDosya.KararNo = model.KararNo;
+            mevcutDosya.Mahkeme = model.Mahkeme;
+            mevcutDosya.KararTebligTarihi = model.KararTebligTarihi;
+            mevcutDosya.HarcDurumu = model.HarcDurumu;
+            mevcutDosya.kararTur = model.kararTur;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = model.Id });
+        }
+
     }
 }

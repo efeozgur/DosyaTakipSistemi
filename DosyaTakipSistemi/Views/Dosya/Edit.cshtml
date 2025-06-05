@@ -1,0 +1,55 @@
+﻿@model DosyaTakipSistemi.Models.DosyaModel
+
+@{
+    ViewData["Title"] = "Dosya Güncelle";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-white fs-4 fw-bold">
+            📝 Dosya Bilgilerini Güncelle
+        </div>
+        <div class="card-body">
+
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="EsasNo" class="form-label">Esas No</label>
+                    <input asp-for="EsasNo" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="KararNo" class="form-label">Karar No</label>
+                    <input asp-for="KararNo" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Mahkeme" class="form-label">Mahkeme</label>
+                    <input asp-for="Mahkeme" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="KararTebligTarihi" class="form-label">Karar Tebliğ Tarihi</label>
+                    <input asp-for="KararTebligTarihi" type="date" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="kararTur" class="form-label">Karar Türü</label>
+                    <select asp-for="kararTur" class="form-control" asp-items="Html.GetEnumSelectList<KararTuru>()"></select>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="HarcDurumu" class="form-check-input" />
+                    <label asp-for="HarcDurumu" class="form-check-label">Harç Yazıldı mı?</label>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">💾 Kaydet</button>
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">İptal</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

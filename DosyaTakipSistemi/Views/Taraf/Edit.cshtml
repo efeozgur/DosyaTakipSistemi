@@ -1,32 +1,66 @@
 ﻿@model DosyaTakipSistemi.Models.TarafModel
 
-<h3>Taraf Bilgilerini Güncelle</h3>
+@{
+    ViewData["Title"] = "Taraf Bilgilerini Güncelle";
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="DosyaId" />
+    // Tebliğ tarihine 15 gün ekle
+    var sonGun = Model.TebligTarihi.AddDays(15);
+    bool itirazSuresiGecti = sonGun < DateTime.Today;
+}
 
-    <div class="form-group">
-        <label>Ad Soyad</label>
-        <input asp-for="AdSoyad" class="form-control" />
+<div class="container py-4">
+
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white fs-4 fw-semibold">
+            👤 Taraf Bilgilerini Güncelle
+        </div>
+        <div class="card-body">
+
+            <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="DosyaId" />
+
+                <div class="mb-3">
+                    <label asp-for="AdSoyad" class="form-label fw-semibold">Ad Soyad</label>
+                    <input asp-for="AdSoyad" class="form-control" />
+                    <span asp-validation-for="AdSoyad" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TebligTarihi" class="form-label fw-semibold">Tebliğ Tarihi</label>
+                    <input asp-for="TebligTarihi" type="date" class="form-control" />
+                    <span asp-validation-for="TebligTarihi" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-2">
+                    <input asp-for="IstinafTalebi" class="form-check-input" disabled="@(itirazSuresiGecti)" />
+
+                    <label asp-for="IstinafTalebi" class="form-check-label fw-semibold">İstinaf Talebi</label>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="TemyizTalebi" class="form-check-input" disabled="@(itirazSuresiGecti)" />
+                    <label asp-for="TemyizTalebi" class="form-check-label fw-semibold">Temyiz Talebi</label>
+                </div>
+
+                @if (itirazSuresiGecti)
+                {
+                    <div class="alert alert-warning fw-semibold">
+                        ⏰ İtiraz süresi dolmuştur. (Son gün: <strong>@sonGun.ToShortDateString()</strong>)
+                    </div>
+                }
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success px-4">💾 Kaydet</button>
+                    <a asp-controller="Dosya" asp-action="Details" asp-route-id="@Model.DosyaId" class="btn btn-outline-secondary px-4">İptal</a>
+                </div>
+            </form>
+
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Tebliğ Tarihi</label>
-        <input asp-for="TebligTarihi" type="date" class="form-control" />
-    </div>
+</div>
 
-    <div class="form-check">
-        <input asp-for="IstinafTalebi" class="form-check-input" />
-        <label class="form-check-label">İstinaf Talebi</label>
-    </div>
-
-    <div class="form-check">
-        <input asp-for="TemyizTalebi" class="form-check-input" />
-        <label class="form-check-label">Temyiz Talebi</label>
-    </div>
-
-    <br />
-    <button type="submit" class="btn btn-primary">Kaydet</button>
-    <a asp-controller="Dosya" asp-action="Details" asp-route-id="@Model.DosyaId" class="btn btn-secondary">İptal</a>
-</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
